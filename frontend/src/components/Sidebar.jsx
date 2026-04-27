@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { FolderPlus, Hash, LogOut, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-const API_URL = 'https://your-backend.onrender.com/api';
+const API_URL = ('http://localhost:5000/', 'https://your-backend.onrender.com/api');
 
 export default function Sidebar({ onSelectGroup, selectedGroupId, userId }) {
   const [groups, setGroups] = useState([])
