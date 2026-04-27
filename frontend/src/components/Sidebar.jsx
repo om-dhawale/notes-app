@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { FolderPlus, Hash, LogOut, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-const API_URL = ('http://localhost:5000/', 'https://notes-app-i8mn.onrender.com/api');
+const API_URL = 'https://notes-app-i8mn.onrender.com/api';
 
 export default function Sidebar({ onSelectGroup, selectedGroupId, userId }) {
   const [groups, setGroups] = useState([])
@@ -33,7 +33,7 @@ export default function Sidebar({ onSelectGroup, selectedGroupId, userId }) {
 
   async function deleteGroup(e, id) {
     e.stopPropagation()
-    if (!confirm("Delete this group and all its notes?")) return
+    if (!confirm("Delete group and its notes?")) return
     const res = await fetch(`${API_URL}/groups/${id}`, { method: 'DELETE' })
     if (res.ok) {
       if (selectedGroupId === id) onSelectGroup(null)
@@ -46,23 +46,19 @@ export default function Sidebar({ onSelectGroup, selectedGroupId, userId }) {
       <h2 className="text-white font-bold text-xl mb-6 flex items-center gap-2">
         <Hash className="text-indigo-400" /> NoteStack
       </h2>
-
       <div className="space-y-1 mb-6">
         <button onClick={() => onSelectGroup(null)} className={`w-full text-left p-2 rounded-lg ${!selectedGroupId ? 'bg-indigo-600 text-white' : 'hover:bg-slate-800'}`}>
           All Notes
         </button>
       </div>
-
       <div className="mb-6 px-1">
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Create Group</p>
         <form onSubmit={addGroup} className="flex gap-2">
-          <input className="bg-slate-800 p-2 rounded text-sm w-full outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Group name..." value={newGroupName} onChange={e => setNewGroupName(e.target.value)} />
-          <button className="bg-indigo-600 p-2 rounded hover:bg-indigo-700 transition-colors"><FolderPlus size={18} /></button>
+          <input className="bg-slate-800 p-2 rounded text-sm w-full outline-none" placeholder="Name..." value={newGroupName} onChange={e => setNewGroupName(e.target.value)} />
+          <button className="bg-indigo-600 p-2 rounded hover:bg-indigo-700"><FolderPlus size={18} /></button>
         </form>
       </div>
-
       <hr className="border-slate-800 mb-6" />
-
       <div className="flex-1 overflow-y-auto space-y-1">
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 px-1">My Groups</p>
         {groups.map(g => (
@@ -76,7 +72,6 @@ export default function Sidebar({ onSelectGroup, selectedGroupId, userId }) {
           </div>
         ))}
       </div>
-
       <button onClick={() => supabase.auth.signOut()} className="mt-4 pt-4 border-t border-slate-800 flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors px-2">
         <LogOut size={18} /> Logout
       </button>

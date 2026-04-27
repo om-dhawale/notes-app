@@ -8,10 +8,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: '*' })); 
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+
+app.get('/', (req, res) => res.send('API is Live!'));
 
 app.get('/api/notes', async (req, res) => {
   const { userId } = req.query;
@@ -23,13 +25,15 @@ app.get('/api/notes', async (req, res) => {
 app.post('/api/notes', async (req, res) => {
   const { title, content, user_id, group_id } = req.body;
   const { data, error } = await supabase.from('notes').insert([{ title, content, user_id, group_id }]).select();
-  res.status(201).json(data ? data[0] : { error });
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json(data[0]);
 });
 
 app.put('/api/notes/:id', async (req, res) => {
   const { title, content } = req.body;
   const { data, error } = await supabase.from('notes').update({ title, content }).eq('id', req.params.id).select();
-  res.json(data ? data[0] : { error });
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data[0]);
 });
 
 app.delete('/api/notes/:id', async (req, res) => {
@@ -45,15 +49,17 @@ app.get('/api/groups', async (req, res) => {
 
 app.post('/api/groups', async (req, res) => {
   const { name, user_id } = req.body;
-  const { data } = await supabase.from('groups').insert([{ name, user_id }]).select();
-  res.status(201).json(data ? data[0] : {});
+  const { data, error } = await supabase.from('groups').insert([{ name, user_id }]).select();
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json(data[0]);
 });
 
 app.delete('/api/groups/:id', async (req, res) => {
   const { id } = req.params;
   await supabase.from('notes').delete().eq('group_id', id);
-  await supabase.from('groups').delete().eq('id', id);
+  const { error } = await supabase.from('groups').delete().eq('id', id);
+  if (error) return res.status(500).json({ error: error.message });
   res.json({ success: true });
 });
 
-app.listen(PORT, () => console.log(`🚀 Server running`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

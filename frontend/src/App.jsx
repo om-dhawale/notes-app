@@ -56,7 +56,7 @@ function App() {
             <h1 className="text-3xl font-bold text-slate-800">{selectedGroupId ? 'Group Notes' : 'All My Notes'}</h1>
             <div className="relative">
               <Search className="absolute left-3 top-2.5 text-slate-400" size={18} />
-              <input className="p-2 pl-10 rounded-full border border-slate-200 outline-none w-64" placeholder="Search notes..." onChange={e => setSearchQuery(e.target.value)} />
+              <input className="p-2 pl-10 rounded-full border border-slate-200 outline-none w-64 focus:ring-2 focus:ring-indigo-500" placeholder="Search notes..." onChange={e => setSearchQuery(e.target.value)} />
             </div>
           </header>
           <NoteEditor userId={session.user.id} groupId={selectedGroupId} onSave={fetchNotes} editNote={editNote} setEditNote={setEditNote} />
@@ -67,7 +67,7 @@ function App() {
                   <Trash2 size={20} />
                 </button>
                 <h3 className="font-bold text-lg mb-1">{note.title}</h3>
-                <span className="text-[10px] font-bold text-slate-400 mb-3 uppercase tracking-widest">{new Date(note.created_at).toLocaleDateString()}</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{new Date(note.created_at).toLocaleDateString()}</span>
                 <p className="text-slate-600 text-sm line-clamp-5 flex-1">{note.content}</p>
               </div>
             ))}

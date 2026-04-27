@@ -1,39 +1,28 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 
+const API_URL = 'https://notes-app-i8mn.onrender.com/api';
+
 export default function NoteEditor({ groupId, onSave, editNote, setEditNote, userId }) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
   useEffect(() => {
-    if (editNote) {
-      setTitle(editNote.title)
-      setContent(editNote.content)
-    } else {
-      setTitle('')
-      setContent('')
-    }
+    if (editNote) { setTitle(editNote.title); setContent(editNote.content); }
+    else { setTitle(''); setContent(''); }
   }, [editNote])
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    if (!title) return
-
-    const url = editNote ? `https://notes-app-i8mn.onrender.com/api/notes/${editNote.id}` : `https://notes-app-i8mn.onrender.com/api/notes`
-    const method = editNote ? 'PUT' : 'POST'
-
+    e.preventDefault();
+    if (!title.trim()) return;
+    const url = editNote ? `${API_URL}/notes/${editNote.id}` : `${API_URL}/notes`;
+    const method = editNote ? 'PUT' : 'POST';
     const response = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content, user_id: userId, group_id: groupId })
-    })
-
-    if (response.ok) {
-      setEditNote(null)
-      setTitle('')
-      setContent('')
-      onSave()
-    }
+    });
+    if (response.ok) { setEditNote(null); setTitle(''); setContent(''); onSave(); }
   }
 
   return (
