@@ -19,7 +19,7 @@ export default function NoteEditor({ groupId, onSave, editNote, setEditNote, use
     e.preventDefault()
     if (!title) return
 
-    const url = editNote ? `http://localhost:5000/api/notes/${editNote.id}` : `http://localhost:5000/api/notes`
+    const url = editNote ? `https://notes-app-i8mn.onrender.com/api/notes/${editNote.id}` : `https://notes-app-i8mn.onrender.com/api/notes`
     const method = editNote ? 'PUT' : 'POST'
 
     const response = await fetch(url, {

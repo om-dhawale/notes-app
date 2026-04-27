@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar'
 import NoteEditor from './components/NoteEditor'
 import { Trash2, Search } from 'lucide-react'
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://notes-app-i8mn.onrender.com';
 
 function App() {
   const [session, setSession] = useState(null)

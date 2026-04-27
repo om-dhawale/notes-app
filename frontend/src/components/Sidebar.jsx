@@ -12,7 +12,7 @@ export default function Sidebar({ onSelectGroup, selectedGroupId, userId }) {
 
   async function fetchGroups() {
     try {
-      const res = await fetch(`http://localhost:5000/api/groups?userId=${userId}`)
+      const res = await fetch(`https://notes-app-i8mn.onrender.com/api/groups?userId=${userId}`)
       const data = await res.json()
       setGroups(Array.isArray(data) ? data : [])
     } catch (err) {
@@ -23,7 +23,7 @@ export default function Sidebar({ onSelectGroup, selectedGroupId, userId }) {
   async function addGroup(e) {
     e.preventDefault()
     if (!newGroupName.trim()) return
-    const res = await fetch('http://localhost:5000/api/groups', {
+    const res = await fetch('https://notes-app-i8mn.onrender.com/api/groups', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: newGroupName, user_id: userId })
